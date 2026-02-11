@@ -20,6 +20,7 @@ declare module 'react-simple-maps' {
   interface GeographyObject {
     rsmKey: string;
     properties: Record<string, any>;
+    geometry: any;
     [key: string]: any;
   }
 
@@ -41,7 +42,17 @@ declare module 'react-simple-maps' {
     className?: string;
   }
 
+  interface MarkerProps {
+    coordinates: [number, number];
+    children?: React.ReactNode;
+  }
+
   export const ComposableMap: React.FC<ComposableMapProps>;
   export const Geographies: React.FC<GeographiesProps>;
   export const Geography: React.FC<GeographyProps>;
+  export const Marker: React.FC<MarkerProps>;
+}
+
+declare module 'd3-geo' {
+  export function geoCentroid(feature: any): [number, number];
 }
