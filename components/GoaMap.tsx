@@ -2,9 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
-import type { FeatureCollection, Feature, GeoJsonProperties } from "geojson";
-import { MapPin } from "@deemlol/next-icons";
-import { divIcon } from "leaflet";
+import type { FeatureCollection, Feature } from "geojson";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -16,21 +14,6 @@ const GeoJSON = dynamic(
   { ssr: false }
 );
 
-const Marker = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Marker),
-  { ssr: false }
-);
-
-const Popup = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Popup),
-  { ssr: false }
-);
-
-// const TileLayer = dynamic(
-//   () => import("react-leaflet").then((mod) => mod.TileLayer),
-//   { ssr: false }
-// );
-
 const geoUrl = "/data/goa-talukas.geojson";
 
 export default function GoaMap() {
@@ -38,38 +21,7 @@ export default function GoaMap() {
   const [talukaData, setTalukaData] = useState<Record<string, any> | null>(null);
   const [hoveredTaluka, setHoveredTaluka] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [talukaCentroids, setTalukaCentroids] = useState<Array<{name: string, lat: number, lng: number}>>([]);
   const mapRef = useRef<any>(null);
-
-  const createCustomIcon = () => {
-    return divIcon({
-      html: `<div class="bg-none text-red-400 w-8 h-8 flex items-center justify-center" style="transform: translateY(-50%);">
-               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                 <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-               </svg>
-             </div>`,
-      className: "",
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-    });
-  };
-
-  const calculateCentroids = (data: FeatureCollection) => {
-    const centroids = data.features.map(feature => {
-      if (feature.geometry.type === 'Polygon') {
-        const coords = (feature.geometry as any).coordinates[0];
-        const lat = coords.reduce((sum: number, coord: number[]) => sum + coord[1], 0) / coords.length;
-        const lng = coords.reduce((sum: number, coord: number[]) => sum + coord[0], 0) / coords.length;
-        return {
-          name: feature.properties?.NAME_3 as string,
-          lat,
-          lng
-        };
-      }
-      return { name: '', lat: 0, lng: 0 };
-    }).filter(centroid => centroid.name !== '');
-    setTalukaCentroids(centroids);
-  };
 
   useEffect(() => {
     setIsClient(true);
@@ -79,7 +31,6 @@ export default function GoaMap() {
       .then((res) => res.json())
       .then((data) => {
         setGeoData(data);
-        calculateCentroids(data);
       })
       .catch((err) => console.error("Failed to load GeoJSON:", err));
     
@@ -155,34 +106,13 @@ export default function GoaMap() {
         attributionControl={false}
         ref={mapRef}
       >
-        {/* <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        /> */}
         <GeoJSON
           data={geoData}
           style={geoJsonStyle}
           onEachFeature={onEachFeature}
         /> 
         
-        {/* Map Pins for each taluka */}
-        {talukaCentroids.map((centroid, index) => (
-          <Marker 
-            key={index} 
-            position={[centroid.lat, centroid.lng]}
-            icon={createCustomIcon()}
-          >
-            <Popup>
-              <div className="font-semibold text-black">{centroid.name}</div>
-              {talukaData && talukaData[centroid.name] && (
-                <div className="text-sm mt-1">
-                  <div>Literacy: {talukaData[centroid.name].literacy_rate}%</div>
-                  <div>Schools: {talukaData[centroid.name].schools}</div>
-                </div>
-              )}
-            </Popup>
-          </Marker>
-        ))}
+        
       </MapContainer>
       
       {/* Zoom Controls */}
@@ -207,40 +137,42 @@ export default function GoaMap() {
         </button>
       </div>
       
-      {(hoveredTaluka && talukaData && talukaData[hoveredTaluka]) ? (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
-          <div className="font-bold text-black text-lg mb-2">{hoveredTaluka}</div>
-          <div className="space-y-1 text-sm">
-            <div className="flex justify-between">
-              <span className="text-black">Literacy Rate:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].literacy_rate}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-black">Male Literacy:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].male_literacy}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-black">Female Literacy:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].female_literacy}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-black">Schools:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].schools}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-black">Colleges:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].colleges}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-black">Dropout Rate:</span>
-              <span className="font-medium text-black">{talukaData[hoveredTaluka].dropout_rate}%</span>
+      {hoveredTaluka && talukaData ? (
+        talukaData[hoveredTaluka] ? (
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
+            <div className="font-bold text-black text-lg mb-2">{hoveredTaluka}</div>
+            <div className="space-y-1 text-sm">
+              <div className="flex justify-between">
+                <span className="text-black">Literacy Rate:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.literacy_rate}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-black">Male Literacy:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.male_literacy}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-black">Female Literacy:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.female_literacy}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-black">Schools:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.schools}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-black">Colleges:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.colleges}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-black">Dropout Rate:</span>
+                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.dropout_rate}%</span>
+              </div>
             </div>
           </div>
-        </div>
-      ) : hoveredTaluka ? (
-        <div>
-          <div className="text-sm text-black mt-1">Loading data...</div>
-        </div>
+        ) : (
+          <div>
+            <div className="text-sm text-black mt-1">Loading data...</div>
+          </div>
+        )
       ) : null}
     </div>
   );
