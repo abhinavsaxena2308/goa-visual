@@ -42,7 +42,7 @@ export default function GoaMap() {
     fillColor: hoveredTaluka === feature?.properties?.NAME_3 ? "#3b82f6" : "transparent",
     weight: 1,
     opacity: 1,
-    color: "#334155",
+    color: "#000000",
     fillOpacity: hoveredTaluka === feature?.properties?.NAME_3 ? 0.2 : 0,
   });
 
