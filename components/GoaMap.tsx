@@ -91,42 +91,42 @@ export default function GoaMap() {
           data={geoData}
           style={geoJsonStyle}
           onEachFeature={onEachFeature}
-        />
+        /> 
       </MapContainer>
       
       {(hoveredTaluka && talukaData && talukaData[hoveredTaluka]) ? (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-[1000] min-w-[200px]">
-          <div className="font-bold text-gray-800 text-lg mb-2">{hoveredTaluka}</div>
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
+          <div className="font-bold text-black text-lg mb-2">{hoveredTaluka}</div>
           <div className="space-y-1 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Literacy Rate:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].literacy_rate}%</span>
+              <span className="text-black">Literacy Rate:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].literacy_rate}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Male Literacy:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].male_literacy}%</span>
+              <span className="text-black">Male Literacy:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].male_literacy}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Female Literacy:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].female_literacy}%</span>
+              <span className="text-black">Female Literacy:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].female_literacy}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Schools:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].schools}</span>
+              <span className="text-black">Schools:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].schools}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Colleges:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].colleges}</span>
+              <span className="text-black">Colleges:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].colleges}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Dropout Rate:</span>
-              <span className="font-medium">{talukaData[hoveredTaluka].dropout_rate}%</span>
+              <span className="text-black">Dropout Rate:</span>
+              <span className="font-medium text-black">{talukaData[hoveredTaluka].dropout_rate}%</span>
             </div>
           </div>
         </div>
       ) : hoveredTaluka ? (
         <div>
-          <div className="text-sm text-gray-500 mt-1">Loading data...</div>
+          <div className="text-sm text-black mt-1">Loading data...</div>
         </div>
       ) : null}
     </div>
