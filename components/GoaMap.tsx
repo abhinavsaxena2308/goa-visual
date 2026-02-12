@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import type { FeatureCollection } from "geojson";
 import type { Layer, LeafletMouseEvent } from "leaflet";
 
-// Dynamic import to avoid SSR issues with Leaflet
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -86,7 +85,9 @@ export default function GoaMap() {
         center={[15.4, 74.0]}
         zoom={9}
         style={{ height: "600px", width: "100%" }}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
+        zoomControl={false}
+        attributionControl={false}
       >
         <GeoJSON
           data={geoData}
