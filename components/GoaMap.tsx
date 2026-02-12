@@ -11,7 +11,6 @@ import { geoCentroid } from "d3-geo";
 
 const geoUrl = "/map/goa-talukas.geojson";
 
-// Map GeoJSON names → correct taluka names
 const NAME_MAP: Record<string, string> = {
   Dicholi: "Bicholim",
   Mapuca: "Bardez",
@@ -27,23 +26,22 @@ const NAME_MAP: Record<string, string> = {
   Sanguem: "Sanguem",
 };
 
-// North Goa talukas get green shades, South Goa talukas get orange shades
 const NORTH_COLORS = [
-  "#bbf7d0", // green-200
-  "#86efac", // green-300
-  "#4ade80", // green-400
-  "#a7f3d0", // emerald-200
-  "#6ee7b7", // emerald-300
-  "#34d399", // emerald-400
-  "#99f6e4", // teal-200
+  "#bbf7d0", 
+  "#86efac", 
+  "#4ade80", 
+  "#a7f3d0", 
+  "#6ee7b7",
+  "#34d399", 
+  "#99f6e4",
 ];
 
 const SOUTH_COLORS = [
-  "#fed7aa", // orange-200
-  "#fdba74", // orange-300
-  "#fb923c", // orange-400
-  "#fde68a", // amber-200
-  "#fcd34d", // amber-300
+  "#fed7aa", 
+  "#fdba74", 
+  "#fb923c", 
+  "#fde68a", 
+  "#fcd34d",
 ];
 
 export default function GoaMap() {
@@ -55,7 +53,6 @@ export default function GoaMap() {
       <h2 className="text-2xl font-bold text-center mb-1">Goa Talukas Map</h2>
       <p className="text-center text-gray-500 text-xs mb-3">12 Talukas across 2 Districts</p>
 
-      {/* Hover info */}
       <div className="text-center h-8 mb-2">
         {hovered ? (
           <span className="bg-gray-800 text-white px-4 py-1 rounded-full text-sm font-medium">
@@ -85,12 +82,10 @@ export default function GoaMap() {
               let northIdx = 0;
               let southIdx = 0;
 
-              // Track which labels we've already rendered (for Tiswadi which has 2 features)
               const labelledNames = new Set<string>();
 
               return (
                 <>
-                  {/* Render taluka shapes */}
                   {goaTalukas.map((geo) => {
                     const rawName = geo.properties.NAME_3 || "";
                     const name = NAME_MAP[rawName] || rawName;
