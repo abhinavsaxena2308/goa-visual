@@ -14,19 +14,28 @@ const GeoJSON = dynamic(
   { ssr: false }
 );
 
-const geoUrl = "/map/goa-talukas.geojson";
+const geoUrl = "/data/goa-talukas.geojson";
 
 export default function GoaMap() {
   const [geoData, setGeoData] = useState<FeatureCollection | null>(null);
+  const [talukaData, setTalukaData] = useState<Record<string, any> | null>(null);
   const [hoveredTaluka, setHoveredTaluka] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Load GeoJSON data
     fetch(geoUrl)
       .then((res) => res.json())
       .then((data) => setGeoData(data))
       .catch((err) => console.error("Failed to load GeoJSON:", err));
+    
+    // Load taluka data
+    fetch("/data/taluka-data.json")
+      .then((res) => res.json())
+      .then((data) => setTalukaData(data))
+      .catch((err) => console.error("Failed to load taluka data:", err));
   }, []);
 
   const geoJsonStyle = (feature?: Feature) => ({
@@ -85,11 +94,41 @@ export default function GoaMap() {
         />
       </MapContainer>
       
-      {hoveredTaluka && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg border border-gray-200 z-[1000]">
-          <div className="font-medium text-gray-800">{hoveredTaluka} Taluka</div>
+      {(hoveredTaluka && talukaData && talukaData[hoveredTaluka]) ? (
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-[1000] min-w-[200px]">
+          <div className="font-bold text-gray-800 text-lg mb-2">{hoveredTaluka}</div>
+          <div className="space-y-1 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Literacy Rate:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].literacy_rate}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Male Literacy:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].male_literacy}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Female Literacy:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].female_literacy}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Schools:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].schools}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Colleges:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].colleges}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Dropout Rate:</span>
+              <span className="font-medium">{talukaData[hoveredTaluka].dropout_rate}%</span>
+            </div>
+          </div>
         </div>
-      )}
+      ) : hoveredTaluka ? (
+        <div>
+          <div className="text-sm text-gray-500 mt-1">Loading data...</div>
+        </div>
+      ) : null}
     </div>
   );
 }

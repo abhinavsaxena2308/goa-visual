@@ -1,0 +1,98 @@
+{
+  "Bicholim": {
+    "literacy_rate": 82.5,
+    "male_literacy": 88.1,
+    "female_literacy": 76.4,
+    "schools": 145,
+    "colleges": 5,
+    "dropout_rate": 4.2
+  },
+  "Bardez": {
+    "literacy_rate": 89.3,
+    "male_literacy": 92.0,
+    "female_literacy": 86.5,
+    "schools": 210,
+    "colleges": 12,
+    "dropout_rate": 2.8
+  },
+  "XYZ": {
+    "literacy_rate": 75.0,
+    "male_literacy": 80.2,
+    "female_literacy": 69.1,
+    "schools": 90,
+    "colleges": 2,
+    "dropout_rate": 6.5
+  },
+  "Panaji": {
+    "literacy_rate": 91.8,
+    "male_literacy": 94.0,
+    "female_literacy": 89.5,
+    "schools": 120,
+    "colleges": 15,
+    "dropout_rate": 1.9
+  },
+  "Pernem": {
+    "literacy_rate": 78.6,
+    "male_literacy": 84.3,
+    "female_literacy": 72.4,
+    "schools": 110,
+    "colleges": 3,
+    "dropout_rate": 5.1
+  },
+  "Ponda": {
+    "literacy_rate": 85.9,
+    "male_literacy": 89.7,
+    "female_literacy": 81.8,
+    "schools": 175,
+    "colleges": 8,
+    "dropout_rate": 3.6
+  },
+  "Satari": {
+    "literacy_rate": 74.8,
+    "male_literacy": 80.0,
+    "female_literacy": 69.0,
+    "schools": 95,
+    "colleges": 1,
+    "dropout_rate": 6.9
+  },
+  "Canacona": {
+    "literacy_rate": 81.2,
+    "male_literacy": 86.5,
+    "female_literacy": 75.3,
+    "schools": 105,
+    "colleges": 4,
+    "dropout_rate": 4.8
+  },
+  "Salcette": {
+    "literacy_rate": 90.4,
+    "male_literacy": 93.1,
+    "female_literacy": 87.6,
+    "schools": 230,
+    "colleges": 14,
+    "dropout_rate": 2.4
+  },
+  "Quepem": {
+    "literacy_rate": 79.7,
+    "male_literacy": 85.2,
+    "female_literacy": 73.8,
+    "schools": 115,
+    "colleges": 3,
+    "dropout_rate": 5.0
+  },
+  "Sambaji": {
+    "literacy_rate": 77.5,
+    "male_literacy": 83.4,
+    "female_literacy": 71.0,
+    "schools": 100,
+    "colleges": 2,
+    "dropout_rate": 5.7
+  },
+  "Sanguem": {
+    "literacy_rate": 72.9,
+    "male_literacy": 78.6,
+    "female_literacy": 66.8,
+    "schools": 88,
+    "colleges": 1,
+    "dropout_rate": 7.2
+  }
+}
