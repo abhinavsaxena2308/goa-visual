@@ -79,28 +79,37 @@ export default function GoaMap() {
           const coords = feature.geometry.coordinates as number[][][];
           let centroid = getCentroid(coords);
           if (name === "Pernem") {
-            centroid = [centroid[0] - 0.05,centroid[1]];
+            centroid = [centroid[0] - 0.07,centroid[1] - 0.08];
           }
           if (name === "Bardez") {
-            centroid = [centroid[0] - 0.04,centroid[1]];
+            centroid = [centroid[0] - 0.05,centroid[1] - 0.05];
           }
           if (name === "Bicholim") {
-            centroid = [centroid[0] - 0.05,centroid[1]];
+            centroid = [centroid[0] - 0.03,centroid[1] -0.07];
           }
           if (name === "Panaji") {
-            centroid = [centroid[0] - 0.05,centroid[1]];
+            centroid = [centroid[0] - 0.05,centroid[1] - 0.04];
           }
           if (name === "Canacona") {
-            centroid = [centroid[0] - 0.05,centroid[1]];
+            centroid = [centroid[0] - 0.05,centroid[1] - 0.03];
           }
           if (name === "Quepem") {
-            centroid = [centroid[0] - 0.09,centroid[1]];
+            centroid = [centroid[0] - 0.09,centroid[1]- 0.07];
           }
           if (name === "Ponda") {
-            centroid = [centroid[0] - 0.05,centroid[1]];
+            centroid = [centroid[0] - 0.04,centroid[1] - 0.04];
+          }
+          if (name === "Salcette") {
+            centroid = [centroid[0] - 0.03,centroid[1] - 0.04];
+          }
+          if (name === "Satari") {
+            centroid = [centroid[0],centroid[1]-0.03 ];
           }
           if (name === "Satari") {
             centroid = [centroid[0] - 0.07,centroid[1]];
+          }
+          if (name === "Sanguem") {
+            centroid = [centroid[0] + 0.01 ,centroid[1] -0.06];
           }
           return { name, centroid };
         }
@@ -111,7 +120,7 @@ export default function GoaMap() {
   const createIcon = (name: string) => {
     const L = require("leaflet");
     return L.divIcon({
-      html: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>`,
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>`,
       className: "",
       iconSize: [20, 26],
       iconAnchor: [10, 26],
