@@ -14,15 +14,7 @@
     "schools": 210,
     "colleges": 12,
     "dropout_rate": 2.8
-  },
-  "XYZ": {
-    "literacy_rate": 75.0,
-    "male_literacy": 80.2,
-    "female_literacy": 69.1,
-    "schools": 90,
-    "colleges": 2,
-    "dropout_rate": 6.5
-  },
+  },  
   "Panaji": {
     "literacy_rate": 91.8,
     "male_literacy": 94.0,

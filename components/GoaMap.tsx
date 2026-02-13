@@ -16,6 +16,10 @@ const GeoJSON = dynamic(
 
 const geoUrl = "/data/goa-talukas.geojson";
 
+// Talukas to merge into a single entity
+const MERGED_TALUKAS = ["Panaji", "XYZ"];
+const MERGED_TALUKA_NAME = "Panaji + XYZ";
+
 export default function GoaMap() {
   const [geoData, setGeoData] = useState<FeatureCollection | null>(null);
   const [talukaData, setTalukaData] = useState<Record<string, any> | null>(null);
@@ -41,17 +45,36 @@ export default function GoaMap() {
       .catch((err) => console.error("Failed to load taluka data:", err));
   }, []);
 
-  const geoJsonStyle = (feature?: Feature) => ({
-    fillColor: hoveredTaluka === feature?.properties?.NAME_3 ? "#0047ab" : "#47abcc",
-    weight: 1,
-    opacity: 1,
-    color: "#ffffff",
-    fillOpacity: hoveredTaluka === feature?.properties?.NAME_3 ? 0.7 : 0.5,
-    filter: "url(#talukaShadow)",
-  });
+  const getDisplayTalukaName = (talukaName: string): string => {
+    if (MERGED_TALUKAS.includes(talukaName)) {
+      return MERGED_TALUKA_NAME;
+    }
+    return talukaName;
+  };
+
+  const isMergedTaluka = (talukaName: string): boolean => {
+    return MERGED_TALUKAS.includes(talukaName);
+  };
+
+  const geoJsonStyle = (feature?: Feature) => {
+    const talukaName = feature?.properties?.NAME_3 as string;
+    const isHovered = hoveredTaluka && (
+      hoveredTaluka === talukaName || 
+      (isMergedTaluka(hoveredTaluka) && isMergedTaluka(talukaName))
+    );
+    return {
+      fillColor: isHovered ? "#0047ab" : "#47abcc",
+      weight: 1,
+      opacity: 1,
+      color: "#ffffff",
+      fillOpacity: isHovered ? 0.7 : 0.5,
+      filter: "url(#talukaShadow)",
+    };
+  };
 
   const onEachFeature = (feature: Feature, layer: any) => {
     const talukaName = feature.properties?.NAME_3 as string;
+    const displayName = getDisplayTalukaName(talukaName);
     
     layer.on({
       mouseover: () => {
@@ -115,11 +138,11 @@ export default function GoaMap() {
         
       </MapContainer>
       
-      {/* Zoom Controls */}
+      {/* zoom controls */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 z-1000">
         <button 
           onClick={handleZoomIn}
-          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
+          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
           aria-label="Zoom in"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
@@ -128,7 +151,7 @@ export default function GoaMap() {
         </button>
         <button 
           onClick={handleZoomOut}
-          className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
+          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
           aria-label="Zoom out"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
@@ -138,33 +161,57 @@ export default function GoaMap() {
       </div>
       
       {hoveredTaluka && talukaData ? (
-        talukaData[hoveredTaluka] ? (
+        talukaData[hoveredTaluka] || (isMergedTaluka(hoveredTaluka) && talukaData[MERGED_TALUKAS[0]]) ? (
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
-            <div className="font-bold text-black text-lg mb-2">{hoveredTaluka}</div>
+            <div className="font-bold text-black text-lg mb-2">{getDisplayTalukaName(hoveredTaluka)}</div>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span className="text-black">Literacy Rate:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.literacy_rate}%</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.literacy_rate
+                    : talukaData[hoveredTaluka]?.literacy_rate}%
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-black">Male Literacy:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.male_literacy}%</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.male_literacy
+                    : talukaData[hoveredTaluka]?.male_literacy}%
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-black">Female Literacy:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.female_literacy}%</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.female_literacy
+                    : talukaData[hoveredTaluka]?.female_literacy}%
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-black">Schools:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.schools}</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.schools
+                    : talukaData[hoveredTaluka]?.schools}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-black">Colleges:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.colleges}</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.colleges
+                    : talukaData[hoveredTaluka]?.colleges}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-black">Dropout Rate:</span>
-                <span className="font-medium text-black">{talukaData[hoveredTaluka]?.dropout_rate}%</span>
+                <span className="font-medium text-black">
+                  {isMergedTaluka(hoveredTaluka) 
+                    ? talukaData["Panaji"]?.dropout_rate
+                    : talukaData[hoveredTaluka]?.dropout_rate}%
+                </span>
               </div>
             </div>
           </div>

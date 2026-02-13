@@ -1007,6 +1007,7 @@
         ]
       },
       "properties": {
+        "group": "NorthCluster",
         "GID_3": "IND.10.1.3_1",
         "GID_0": "IND",
         "COUNTRY": "India",
@@ -1692,6 +1693,7 @@
         ]
       },
       "properties": {
+        "group": "NorthCluster",
         "GID_3": "IND.10.1.4_1",
         "GID_0": "IND",
         "COUNTRY": "India",
@@ -1701,8 +1703,8 @@
         "GID_2": "IND.10.1_1",
         "NAME_2": "North Goa",
         "NL_NAME_2": "NA",
-        "NAME_3": "Panaji",
-        "VARNAME_3": "Goa",
+          "NAME_3": "Panaji",
+          "VARNAME_3": "Goa",
         "NL_NAME_3": "NA",
         "TYPE_3": "Taluk",
         "ENGTYPE_3": "Taluk",
