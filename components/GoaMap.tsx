@@ -6,9 +6,10 @@ import type { FeatureCollection, Feature } from "geojson";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
 
 const MERGED_TALUKAS = ["Panaji", "XYZ"] as const;
-const MERGED_NAME = "Panaji";
+const MERGED_NAME = "Tiswadi";
 const DEFAULT_DATA = {
   literacy_rate: "-",
   male_literacy: "-",
@@ -49,6 +50,46 @@ export default function GoaMap() {
     });
   };
 
+  const getCentroid = (coords: number[][][]): [number, number] => {
+    let lat = 0, lng = 0;
+    const points = coords.flat(2);
+    for (let i = 0; i < points.length; i += 2) {
+      lng += points[i];
+      lat += points[i + 1];
+    }
+    return [lat / (points.length / 2), lng / (points.length / 2)];
+  };
+
+  const getTalukaMarkers = () => {
+    if (!geoData?.features) return [];
+    return geoData.features
+      .filter((feature) => {
+        const name = feature.properties?.NAME_3 as string;
+        // Skip merged talukas (only keep the first one for display)
+        if (name === "XYZ") return false;
+        return true;
+      })
+      .map((feature) => {
+        const name = feature.properties?.NAME_3 as string;
+        if (feature.geometry.type === "Polygon") {
+          const coords = feature.geometry.coordinates as number[][][];
+          const centroid = getCentroid(coords);
+          return { name, centroid };
+        }
+        return null;
+      }).filter(Boolean);
+  };
+
+  const createIcon = (name: string) => {
+    const L = require("leaflet");
+    return L.divIcon({
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>`,
+      className: "",
+      iconSize: [20, 26],
+      iconAnchor: [10, 26],
+    });
+  };
+
   const data = hoveredTaluka ? getData(hoveredTaluka) : null;
 
   if (!isClient || !geoData) return <div className="text-center p-8">Loading map...</div>;
@@ -57,6 +98,9 @@ export default function GoaMap() {
     <div className="relative w-full max-w-4xl mx-auto ">
       <MapContainer center={[15.4, 74.0]} zoom={9} style={{ height: "600px", width: "100%", backgroundColor: "#e6f3ff" }} scrollWheelZoom={false} zoomControl={false} attributionControl={false} ref={mapRef}>
         <GeoJSON data={geoData} style={getStyle} onEachFeature={onEachFeature} />
+        {getTalukaMarkers().map((marker) => (
+          <Marker key={marker!.name} position={marker!.centroid} icon={createIcon(marker!.name)} />
+        ))}
       </MapContainer>
       
       <div className="absolute top-4 right-4 flex flex-col gap-2 z-1000">
@@ -71,7 +115,7 @@ export default function GoaMap() {
           </svg>
         </button>
       </div>
-      
+
       {data && (
         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
           <div className="font-bold text-red-400 justify-center flex text-lg mb-2">{getDisplayName(hoveredTaluka!)}</div>
