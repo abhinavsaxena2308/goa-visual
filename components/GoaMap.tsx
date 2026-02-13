@@ -51,13 +51,18 @@ export default function GoaMap() {
   };
 
   const getCentroid = (coords: number[][][]): [number, number] => {
-    let lat = 0, lng = 0;
+    // Use bounding box center for accurate pin placement within polygon
+    let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
     const points = coords.flat(2);
     for (let i = 0; i < points.length; i += 2) {
-      lng += points[i];
-      lat += points[i + 1];
+      const lng = points[i];
+      const lat = points[i + 1];
+      minLat = Math.min(minLat, lat);
+      maxLat = Math.max(maxLat, lat);
+      minLng = Math.min(minLng, lng);
+      maxLng = Math.max(maxLng, lng);
     }
-    return [lat / (points.length / 2), lng / (points.length / 2)];
+    return [(minLat + maxLat) / 2, (minLng + maxLng) / 2];
   };
 
   const getTalukaMarkers = () => {
@@ -65,7 +70,6 @@ export default function GoaMap() {
     return geoData.features
       .filter((feature) => {
         const name = feature.properties?.NAME_3 as string;
-        // Skip merged talukas (only keep the first one for display)
         if (name === "XYZ") return false;
         return true;
       })
@@ -73,7 +77,31 @@ export default function GoaMap() {
         const name = feature.properties?.NAME_3 as string;
         if (feature.geometry.type === "Polygon") {
           const coords = feature.geometry.coordinates as number[][][];
-          const centroid = getCentroid(coords);
+          let centroid = getCentroid(coords);
+          if (name === "Pernem") {
+            centroid = [centroid[0] - 0.05,centroid[1]];
+          }
+          if (name === "Bardez") {
+            centroid = [centroid[0] - 0.04,centroid[1]];
+          }
+          if (name === "Bicholim") {
+            centroid = [centroid[0] - 0.05,centroid[1]];
+          }
+          if (name === "Panaji") {
+            centroid = [centroid[0] - 0.05,centroid[1]];
+          }
+          if (name === "Canacona") {
+            centroid = [centroid[0] - 0.05,centroid[1]];
+          }
+          if (name === "Quepem") {
+            centroid = [centroid[0] - 0.09,centroid[1]];
+          }
+          if (name === "Ponda") {
+            centroid = [centroid[0] - 0.05,centroid[1]];
+          }
+          if (name === "Satari") {
+            centroid = [centroid[0] - 0.07,centroid[1]];
+          }
           return { name, centroid };
         }
         return null;
