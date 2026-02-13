@@ -119,37 +119,37 @@ export default function GoaMap() {
           const coords = feature.geometry.coordinates as number[][][];
           let centroid = getCentroid(coords);
           if (name === "Pernem") {
-            centroid = [centroid[0] - 0.04, centroid[1] - 0.09];
+            centroid = [centroid[0] - 0.04, centroid[1]  - 0.02];
           }
           if (name === "Bardez") {
-            centroid = [centroid[0] - 0.02, centroid[1] - 0.06];
-          }
+            centroid = [centroid[0] - 0.02, centroid[1] - 0.04];
+          } 
           if (name === "Bicholim") {
-            centroid = [centroid[0], centroid[1] - 0.08];
+            centroid = [centroid[0], centroid[1] - 0.05];
           }
           if (name === "Panaji") {
-            centroid = [centroid[0] - 0.02, centroid[1] - 0.05];
+            centroid = [centroid[0] - 0.03, centroid[1] ];
           }
           if (name === "Canacona") {
-            centroid = [centroid[0] - 0.05, centroid[1] - 0.02];
+            centroid = [centroid[0] - 0.05, centroid[1] + 0.02];
           }
           if (name === "Quepem") {
-            centroid = [centroid[0] - 0.06, centroid[1] - 0.09];
+            centroid = [centroid[0] - 0.06, centroid[1] -0.02];
           }
           if (name === "Ponda") {
-            centroid = [centroid[0] - 0.03, centroid[1] - 0.04];
+            centroid = [centroid[0] - 0.03, centroid[1] ];
           }
           if (name === "Salcette") {
-            centroid = [centroid[0] - 0.03, centroid[1] - 0.04];
+            centroid = [centroid[0] - 0.03, centroid[1]];
           }
           if (name === "Satari") {
             centroid = [centroid[0] + 0.03, centroid[1] - 0.05];
           }
           if (name === "Satari") {
-            centroid = [centroid[0] - 0.07, centroid[1]];
+            centroid = [centroid[0] - 0.07, centroid[1]+0.06];
           }
           if (name === "Sanguem") {
-            centroid = [centroid[0] + 0.05, centroid[1] - 0.085];
+            centroid = [centroid[0] + 0.05, centroid[1] ];
           }
           if (name === "Sambaji") {
             centroid = [centroid[0] - 0.01, centroid[1] - 0.02];
@@ -164,10 +164,15 @@ export default function GoaMap() {
   const createIcon = (name: string) => {
     const L = require("leaflet");
     return L.divIcon({
-      html: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>`,
+      html: `
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>
+          <div style="font-weight: bold; color: #ffffff; font-size: 11px; white-space: nowrap; padding: 1px 3px;">${getDisplayName(name)}</div>
+        </div>
+      `,
       className: "",
-      iconSize: [20, 26],
-      iconAnchor: [10, 26],
+      iconSize: [40, 40],
+      iconAnchor: [20, 35],
     });
   };
 
