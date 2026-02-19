@@ -185,7 +185,14 @@ export default function GoaMap() {
     <div className="relative w-full max-w-4xl mx-auto ">
       <MapContainer
         center={[15.4, 74.0]}
-        zoom={10}
+        zoom={10}          
+        minZoom={9}        
+        maxZoom={10}      
+        maxBounds={[
+          [14.9, 73.5],    
+          [15.8, 74.2],    
+        ]}
+        maxBoundsViscosity={1.0}
         style={{ height: "800px", width: "100%", backgroundColor: "#e6f3fe" }}
         scrollWheelZoom={false}
         zoomControl={false}
