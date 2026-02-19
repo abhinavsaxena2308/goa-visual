@@ -186,19 +186,19 @@ export default function GoaMap() {
     return <div className="text-center p-8">Loading map...</div>;
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto px-4">
+    <div className="relative w-full max-w-6xl mx-auto px-4">
       <MapContainer
         center={[15.35, 73.88]}
-        zoom={10}
+        zoom={9}
         minZoom={9}        
-        maxZoom={10}      
+        maxZoom={12}      
         maxBounds={[
-          [14.9, 73.5],    
-          [15.8, 74.2],    
+          [14.7, 73.4],    
+          [16.0, 74.3],    
         ]}
         maxBoundsViscosity={1.0}
-        style={{ height: "800px", width: "100%", backgroundColor: "#e6f3fe" }}
-        scrollWheelZoom={false}
+        style={{ height: "85vh", maxHeight: "900px", minHeight: "600px", width: "100%", backgroundColor: "#e6f3fe" }}
+        scrollWheelZoom={true}
         zoomControl={false}
         attributionControl={false}
         ref={mapRef}
