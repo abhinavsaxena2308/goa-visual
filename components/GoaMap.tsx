@@ -103,7 +103,6 @@ export default function GoaMap() {
   const getTalukaMarkers = () => {
     if (!geoData?.features) return [];
 
-    // Debug: log all taluka names
     const allNames = geoData.features.map((f) => f.properties?.NAME_3);
     // console.log("All talukas:", allNames.filter(Boolean));
 
@@ -187,10 +186,10 @@ export default function GoaMap() {
     return <div className="text-center p-8">Loading map...</div>;
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto ">
+    <div className="relative w-full max-w-5xl mx-auto px-4">
       <MapContainer
-        center={[15.4, 74.0]}
-        zoom={10}          
+        center={[15.35, 73.88]}
+        zoom={10}
         minZoom={9}        
         maxZoom={10}      
         maxBounds={[
