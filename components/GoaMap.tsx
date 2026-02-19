@@ -115,48 +115,53 @@ export default function GoaMap() {
       })
       .map((feature) => {
         const name = feature.properties?.NAME_3 as string;
+        let coords: number[][][];
+        
         if (feature.geometry.type === "Polygon") {
-          const coords = feature.geometry.coordinates as number[][][];
-          let centroid = getCentroid(coords);
-          if (name === "Pernem") {
-            centroid = [centroid[0] - 0.04, centroid[1]  - 0.02];
-          }
-          if (name === "Bardez") {
-            centroid = [centroid[0] - 0.02, centroid[1] - 0.04];
-          } 
-          if (name === "Bicholim") {
-            centroid = [centroid[0], centroid[1] - 0.05];
-          }
-          if (name === "Panaji") {
-            centroid = [centroid[0] - 0.03, centroid[1] ];
-          }
-          if (name === "Canacona") {
-            centroid = [centroid[0] - 0.05, centroid[1] + 0.02];
-          }
-          if (name === "Quepem") {
-            centroid = [centroid[0] - 0.06, centroid[1] -0.02];
-          }
-          if (name === "Ponda") {
-            centroid = [centroid[0] - 0.03, centroid[1] ];
-          }
-          if (name === "Salcette") {
-            centroid = [centroid[0] - 0.03, centroid[1]];
-          }
-          if (name === "Satari") {
-            centroid = [centroid[0] + 0.03, centroid[1] - 0.05];
-          }
-          if (name === "Satari") {
-            centroid = [centroid[0] - 0.07, centroid[1]+0.06];
-          }
-          if (name === "Sanguem") {
-            centroid = [centroid[0] + 0.05, centroid[1] ];
-          }
-          if (name === "Sambaji") {
-            centroid = [centroid[0] - 0.01, centroid[1] - 0.02];
-          }
-          return { name, centroid };
+          coords = feature.geometry.coordinates as number[][][];
+        } else if (feature.geometry.type === "MultiPolygon") {
+          // For MultiPolygon, use the first polygon
+          coords = (feature.geometry.coordinates as number[][][][])[0];
+        } else {
+          return null;
         }
-        return null;
+
+        let centroid = getCentroid(coords);
+        
+        if (name === "Pernem") {
+          centroid = [centroid[0] - 0.04, centroid[1]  - 0.02];
+        }
+        if (name === "Bardez") {
+          centroid = [centroid[0] - 0.02, centroid[1] - 0.04];
+        } 
+        if (name === "Bicholim") {
+          centroid = [centroid[0], centroid[1] - 0.05];
+        }
+        if (name === "Panaji") {
+          centroid = [centroid[0] - 0.03, centroid[1] ];
+        }
+        if (name === "Canacona") {
+          centroid = [centroid[0] - 0.05, centroid[1] + 0.02];
+        }
+        if (name === "Quepem") {
+          centroid = [centroid[0] - 0.06, centroid[1] -0.02];
+        }
+        if (name === "Ponda") {
+          centroid = [centroid[0] - 0.03, centroid[1] ];
+        }
+        if (name === "Salcette") {
+          centroid = [centroid[0] - 0.03, centroid[1]];
+        }
+        if (name === "Satari") {
+          centroid = [centroid[0] - 0.07, centroid[1] + 0.06];
+        }
+        if (name === "Sanguem") {
+          centroid = [centroid[0] + 0.05, centroid[1] ];
+        }
+        if (name === "Sambaji") {
+          centroid = [centroid[0] - 0.01, centroid[1] + 0.03];
+        }
+        return { name, centroid };
       })
       .filter(Boolean);
   };
