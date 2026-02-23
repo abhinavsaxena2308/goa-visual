@@ -131,13 +131,13 @@ export default function GoaMap() {
           centroid = [centroid[0] - 0.04, centroid[1]  - 0.02];
         }
         if (name === "Bardez") {
-          centroid = [centroid[0] - 0.02, centroid[1] - 0.04];
+          centroid = [centroid[0] - 0.02, centroid[1] ];
         } 
         if (name === "Bicholim") {
           centroid = [centroid[0], centroid[1] - 0.05];
         }
         if (name === "Panaji") {
-          centroid = [centroid[0] - 0.03, centroid[1] ];
+          centroid = [centroid[0] - 0.04, centroid[1] +0.02];
         }
         if (name === "Canacona") {
           centroid = [centroid[0] - 0.05, centroid[1] + 0.02];
@@ -149,10 +149,10 @@ export default function GoaMap() {
           centroid = [centroid[0] - 0.03, centroid[1] ];
         }
         if (name === "Salcette") {
-          centroid = [centroid[0] - 0.03, centroid[1]];
+          centroid = [centroid[0] - 0.03  , centroid[1]];
         }
         if (name === "Satari") {
-          centroid = [centroid[0] - 0.07, centroid[1] + 0.06];
+          centroid = [centroid[0] - 0.02, centroid[1] + 0.04];
         }
         if (name === "Sanguem") {
           centroid = [centroid[0] + 0.05, centroid[1] ];
@@ -186,18 +186,18 @@ export default function GoaMap() {
     return <div className="text-center p-8">Loading map...</div>;
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto px-4">
+    <div className="relative w-full max-w-6xl mx-auto px-4 justify">
       <MapContainer
         center={[15.35, 73.88]}
         zoom={10}
         minZoom={9}
-        maxZoom={10}      
+        maxZoom={12}      
         maxBounds={[
           [14.7, 73.4],    
           [16.0, 74.3],    
         ]}
         maxBoundsViscosity={1.0}
-        style={{ height: "85vh", maxHeight: "900px", minHeight: "600px", width: "100%", backgroundColor: "#e6f3fe" }}
+        style={{ height: "80vh", maxHeight: "900px", minHeight: "600px", width: "100%", backgroundColor: "#e6f3fe" }}
         scrollWheelZoom={true}
         zoomControl={false}
         attributionControl={false}
@@ -217,10 +217,10 @@ export default function GoaMap() {
         ))}
       </MapContainer>
 
-      <div className="absolute top-4 right-4 flex flex-col gap-2 z-1000">
+      <div className="absolute top-4 right-4 flex flex-col gap-2 z-1000 mr-6">
         <button
           onClick={() => mapRef.current?.zoomIn()}
-          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
+          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
           aria-label="Zoom in"
         >
           <svg
@@ -238,7 +238,7 @@ export default function GoaMap() {
         </button>
         <button
           onClick={() => mapRef.current?.zoomOut()}
-          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
+          className="w-8 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 flex items-center justify-center hover:bg-white transition-colors duration-200"
           aria-label="Zoom out"
         >
           <svg
