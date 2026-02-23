@@ -63,7 +63,7 @@ export default function GoaMap() {
     return {
       fillColor: hovered ? "#096e77" : "#129eaa",
       weight: 1,
-      opacity: 2,
+      opacity: 1,
       color: "#ffffff",
       fillOpacity: hovered ? 0.7 : 0.5,
     };
@@ -74,11 +74,11 @@ export default function GoaMap() {
     layer.on({
       mouseover: () => {
         setHoveredTaluka(name);
-        layer.setStyle({ fillColor: "#0047ab", fillOpacity: 0.7 });
+        layer.setStyle({ fillColor: "#096e77", fillOpacity: 0.7 });
       },
       mouseout: () => {
         setHoveredTaluka(null);
-        layer.setStyle({ fillColor: "#47abcc", fillOpacity: 0.5 });
+        layer.setStyle({ fillColor: "#129eaa", fillOpacity: 0.5 });
       },
     });
   };
@@ -119,7 +119,6 @@ export default function GoaMap() {
         if (feature.geometry.type === "Polygon") {
           coords = feature.geometry.coordinates as number[][][];
         } else if (feature.geometry.type === "MultiPolygon") {
-          // For MultiPolygon, use the first polygon
           coords = (feature.geometry.coordinates as number[][][][])[0];
         } else {
           return null;
@@ -171,7 +170,7 @@ export default function GoaMap() {
       html: `
         <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>
-          <div style="font-weight: bold; color: #ffffff; font-size: 11px; white-space: nowrap; padding: 1px 3px;">${getDisplayName(name)}</div>
+          <div style="font-weight: light; color: #ffffff; font-size: 12px; white-space: nowrap; padding: 1px 3px;">${getDisplayName(name)}</div>
         </div>
       `,
       className: "",
@@ -188,10 +187,10 @@ export default function GoaMap() {
   return (
     <div className="relative w-full max-w-6xl mx-auto px-4">
       <MapContainer
-        center={[15.35, 73.88]}
+        center={[16, 74]}
         zoom={9}
-        minZoom={9}        
-        maxZoom={12}      
+        minZoom={9}
+        maxZoom={10}      
         maxBounds={[
           [14.7, 73.4],    
           [16.0, 74.3],    
@@ -258,7 +257,7 @@ export default function GoaMap() {
 
       {data && (
         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-gray-200 z-1000 min-w-52">
-          <div className="font-bold text-red-400 justify-center flex text-lg mb-2">
+          <div className="font-bold text-black justify-center flex text-lg mb-2">
             {getDisplayName(hoveredTaluka!)}
           </div>
           {[
