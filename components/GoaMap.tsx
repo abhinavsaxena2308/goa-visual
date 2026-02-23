@@ -119,6 +119,7 @@ export default function GoaMap() {
         if (feature.geometry.type === "Polygon") {
           coords = feature.geometry.coordinates as number[][][];
         } else if (feature.geometry.type === "MultiPolygon") {
+          // For MultiPolygon, use the first polygon
           coords = (feature.geometry.coordinates as number[][][][])[0];
         } else {
           return null;
@@ -187,8 +188,8 @@ export default function GoaMap() {
   return (
     <div className="relative w-full max-w-6xl mx-auto px-4">
       <MapContainer
-        center={[16, 74]}
-        zoom={9}
+        center={[15.35, 73.88]}
+        zoom={10}
         minZoom={9}
         maxZoom={10}      
         maxBounds={[
