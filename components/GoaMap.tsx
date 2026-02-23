@@ -115,47 +115,46 @@ export default function GoaMap() {
       .map((feature) => {
         const name = feature.properties?.NAME_3 as string;
         let coords: number[][][];
-        
+
         if (feature.geometry.type === "Polygon") {
           coords = feature.geometry.coordinates as number[][][];
         } else if (feature.geometry.type === "MultiPolygon") {
-          // For MultiPolygon, use the first polygon
           coords = (feature.geometry.coordinates as number[][][][])[0];
         } else {
           return null;
         }
 
         let centroid = getCentroid(coords);
-        
+
         if (name === "Pernem") {
-          centroid = [centroid[0] - 0.04, centroid[1]  - 0.02];
+          centroid = [centroid[0] - 0.04, centroid[1] - 0.02];
         }
         if (name === "Bardez") {
-          centroid = [centroid[0] - 0.02, centroid[1] ];
-        } 
+          centroid = [centroid[0] - 0.02, centroid[1]];
+        }
         if (name === "Bicholim") {
           centroid = [centroid[0], centroid[1] - 0.05];
         }
         if (name === "Panaji") {
-          centroid = [centroid[0] - 0.04, centroid[1] +0.02];
+          centroid = [centroid[0] - 0.04, centroid[1] + 0.02];
         }
         if (name === "Canacona") {
           centroid = [centroid[0] - 0.05, centroid[1] + 0.02];
         }
         if (name === "Quepem") {
-          centroid = [centroid[0] - 0.06, centroid[1] -0.02];
+          centroid = [centroid[0] - 0.06, centroid[1] - 0.02];
         }
         if (name === "Ponda") {
-          centroid = [centroid[0] - 0.03, centroid[1] ];
+          centroid = [centroid[0] - 0.03, centroid[1]];
         }
         if (name === "Salcette") {
-          centroid = [centroid[0] - 0.03  , centroid[1]];
+          centroid = [centroid[0] - 0.03, centroid[1]];
         }
         if (name === "Satari") {
           centroid = [centroid[0] - 0.02, centroid[1] + 0.04];
         }
         if (name === "Sanguem") {
-          centroid = [centroid[0] + 0.05, centroid[1] ];
+          centroid = [centroid[0] + 0.05, centroid[1]];
         }
         if (name === "Sambaji") {
           centroid = [centroid[0] - 0.01, centroid[1] + 0.03];
@@ -170,7 +169,7 @@ export default function GoaMap() {
     return L.divIcon({
       html: `
         <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 24 16 24s16-12 16-24c0-8.837-7.163-16-16-16z" fill="#E53E3E"/><circle cx="16" cy="14" r="6" fill="white"/></svg>
           <div style="font-weight: light; color: #ffffff; font-size: 12px; white-space: nowrap; padding: 1px 3px;">${getDisplayName(name)}</div>
         </div>
       `,
@@ -186,15 +185,15 @@ export default function GoaMap() {
     return <div className="text-center p-8">Loading map...</div>;
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto px-4 justify">
+    <div className="relative w-full max-w-6xl mx-auto px-4">
       <MapContainer
-        center={[15.35, 73.88]}
+        center={[15.30, 74.00]}
         zoom={10}
         minZoom={9}
-        maxZoom={12}      
+        maxZoom={11}
         maxBounds={[
-          [14.7, 73.4],    
-          [16.0, 74.3],    
+          [14.3, 73.4],
+          [16.0, 74.3],
         ]}
         maxBoundsViscosity={1.0}
         style={{ height: "80vh", maxHeight: "900px", minHeight: "600px", width: "100%", backgroundColor: "#e6f3fe" }}
